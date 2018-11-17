@@ -1,14 +1,16 @@
 package com.jietong.rfid.uhf.entity;
 
 import gnu.io.SerialPort;
+
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
+
 import networks.service.NetworkService;
 import networks.service.impl.NetworkServiceImpl;
 import serialports.service.SerialPortService;
 import serialports.service.impl.SerialPortServiceImpl;
-import com.jietong.rfid.uhf.tool.BCC;
+
 import com.jietong.rfid.uhf.tool.CMDReceive;
 import com.jietong.rfid.uhf.tool.CMDSend;
 import com.jietong.rfid.uhf.tool.CallBack;
@@ -36,7 +38,7 @@ public class Reader extends PACKAGE {
 		reader.head_count = 0;
 		reader.data_count = 0;
 	}
-	
+
 	public boolean connect(Reader reader) {
 		boolean flag = R_FAIL;
 		if (reader.bIsComPort) {
@@ -51,7 +53,7 @@ public class Reader extends PACKAGE {
 				e.printStackTrace();
 			}
 		} else {
-			reader.socket = serviceNet.open(reader.host,reader.port);
+			reader.socket = serviceNet.open(reader.host, reader.port);
 			if (reader.socket != null) {
 				flag = R_OK;
 			} else {
@@ -83,9 +85,10 @@ public class Reader extends PACKAGE {
 		}
 		ByteBuffer buffer = ByteBuffer.allocate(10);
 		if (reader.sendData(reader, CMDSend.ACTIVE_GET_VERSION, null, 0, 0)) {
-			if (reader.readData(reader, CMDReceive.ACTIVE_GET_VERSION, buffer,0, 6)) {
-				if (DataConvert.arrayCompareEquals(reader.startcode,CMDSend.ACTIVE_START_CODE) 
-						&& reader.len == 6) {
+			if (reader.readData(reader, CMDReceive.ACTIVE_GET_VERSION, buffer,
+					0, 6)) {
+				if (DataConvert.arrayCompareEquals(reader.startcode,
+						CMDSend.ACTIVE_START_CODE) && reader.len == 6) {
 					byte[] version = buffer.array();
 					for (int i = 0; i < version.length; i++) {
 						if (i < 3) {
@@ -132,7 +135,7 @@ public class Reader extends PACKAGE {
 		// System.out.println();
 		boolean size = false;
 		if (reader.bIsComPort) {
-			size = serviceCom.send(reader.serialPort,receiveData);
+			size = serviceCom.send(reader.serialPort, receiveData);
 		} else {
 			size = serviceNet.send(reader.socket, receiveData);
 		}
@@ -212,14 +215,15 @@ public class Reader extends PACKAGE {
 			if (reader.bIsComPort) {
 				retVal = reader.comReceiveData(reader, reader.serialPort);
 			} else {
-				//retVal = reader.socketRecv(reader, reader.socket);
+				// retVal = reader.socketRecv(reader, reader.socket);
 			}
 			if (null != retVal) {
 				for (int i = 0; i < retVal.length; ++i) {
-					if (trandPackage(reader,retVal[i])) {
+					if (trandPackage(reader, retVal[i])) {
 						if (DataConvert.arrayCompareEquals(reader.cmd, cmd)) {
 							if (buffer != null) {
-								buffer.put(Arrays.copyOf(reader.data, reader.len));// 去掉附加的数据长度
+								buffer.put(Arrays.copyOf(reader.data,
+										reader.len));// 去掉附加的数据长度
 							}
 							return true;
 						}
@@ -235,7 +239,7 @@ public class Reader extends PACKAGE {
 			return null;
 		}
 		byte[] result = serviceNet.read(socket);
-		if(null != result){
+		if (null != result) {
 			System.out.println("原始数据: " + DataConvert.bytesToHexString(result));
 		}
 		return result;
@@ -246,7 +250,7 @@ public class Reader extends PACKAGE {
 			return null;
 		}
 		byte[] result = serviceCom.read(serialPort);
-		if(null != result){
+		if (null != result) {
 			System.out.println("原始数据: " + DataConvert.bytesToHexString(result));
 		}
 		return result;
@@ -301,13 +305,15 @@ public class Reader extends PACKAGE {
 	public boolean setWorkMode(Reader reader, byte[] setFrequencyParameters) {
 		byte[] sendbuf = setFrequencyParameters;
 		ByteBuffer buffer = ByteBuffer.allocate(20);
-		if (reader.sendData(reader, CMDSend.ACTIVE_SET_PARAMETERS, sendbuf, 0,sendbuf.length)) {
+		if (reader.sendData(reader, CMDSend.ACTIVE_SET_PARAMETERS, sendbuf, 0,
+				sendbuf.length)) {
 			try {
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
-			if (reader.readData(reader, CMDReceive.ACTIVE_SET_PARAMETERS,buffer, 0, 1)) {
+			if (reader.readData(reader, CMDReceive.ACTIVE_SET_PARAMETERS,
+					buffer, 0, 1)) {
 				if (DataConvert.arrayCompareEquals(reader.startcode,
 						CMDSend.ACTIVE_START_CODE) && reader.len == 1) {
 					if (buffer.array()[0] == 0x01) {
@@ -395,8 +401,10 @@ public class Reader extends PACKAGE {
 	public boolean stopCarrier(Reader reader) {
 		byte[] sendbuf = new byte[1];
 		ByteBuffer buffer = ByteBuffer.allocate(20);
-		if (reader.sendData(reader, CMDSend.ACTIVE_STOP_CARRIER, sendbuf, 0,sendbuf.length)) {
-			if (reader.readData(reader, CMDReceive.ACTIVE_STOP_CARRIER, buffer,	0, 1)) {
+		if (reader.sendData(reader, CMDSend.ACTIVE_STOP_CARRIER, sendbuf, 0,
+				sendbuf.length)) {
+			if (reader.readData(reader, CMDReceive.ACTIVE_STOP_CARRIER, buffer,
+					0, 1)) {
 				if (DataConvert.arrayCompareEquals(reader.startcode,
 						CMDSend.ACTIVE_START_CODE) && reader.len == 1) {
 					if (buffer.array()[0] == 0x01) {
@@ -579,8 +587,8 @@ public class Reader extends PACKAGE {
 		return false;
 	}
 
-	public boolean startMultiTag(Reader reader,CallBack callBack) {
-		if(null == reader){
+	public boolean startMultiTag(Reader reader, CallBack callBack) {
+		if (null == reader) {
 			return false;
 		}
 		reader.threadStart = false;
@@ -589,7 +597,7 @@ public class Reader extends PACKAGE {
 		byte[] sendbuf = { 0x01 };
 		if (reader.sendData(reader, CMDSend.ACTIVE_MULITI_ID, sendbuf, 0, 1)) {
 			reader.threadStart = true;
-			ReaderCard readThread = new ReaderCard(reader,callBack);
+			ReaderCard readThread = new ReaderCard(reader, callBack);
 			Thread loopThread = new Thread(readThread);
 			loopThread.start();
 			return true;
@@ -597,15 +605,20 @@ public class Reader extends PACKAGE {
 		return false;
 	}
 
-	protected void threadFunc(Reader reader, CallBack callBack) {
+	protected void threadFunc(final Reader reader, final CallBack callBack) {
 		if (null == reader) {
 			return;
 		}
 		boolean exit = true;
 		do {
-			byte[] buffer = reader.deviceReadBuffer(reader);
+			final byte[] buffer = reader.deviceReadBuffer(reader);
 			if (null != buffer) {
-				reader.deviceTransBuffer(reader, buffer, callBack);
+				new Thread(new Runnable() {
+					@Override
+					public synchronized void run() {
+						reader.deviceTransBuffer(reader, buffer, callBack);
+					}
+				}).start();
 			}
 			if (!reader.threadStart) {
 				if (null == buffer) {
@@ -623,8 +636,9 @@ public class Reader extends PACKAGE {
 		reader.head_count = 0;
 		reader.data_count = 0;
 	}
-	
-	private boolean trandPackageContinue(Reader reader, byte data,ByteBuffer buffer, ByteBuffer returnLength) {
+
+	private boolean trandPackageContinue(Reader reader, byte data,
+			ByteBuffer buffer, ByteBuffer returnLength) {
 		if (null == reader) {
 			return R_FAIL;
 		}
@@ -667,15 +681,16 @@ public class Reader extends PACKAGE {
 		} else if (reader.data_count < reader.len) {
 			buffer.put(data);
 			reader.data_count++;
+		} else {
 			if (reader.data_count == reader.len) {
 				reader.head_count = 0;
 				reader.data_count = 0;
 				return true;
-			}
-		} else {
+			} else {
 				reader.head_count = 0;
 				reader.data_count = 0;
 				return false;
+			}
 		}
 		return false;
 	}
@@ -685,20 +700,21 @@ public class Reader extends PACKAGE {
 		if (null == reader) {
 			return;
 		}
-		ByteBuffer returnBuffer = ByteBuffer.allocate(buffer.length);
+		ByteBuffer returnBuffer = ByteBuffer.allocate(4);
 		ByteBuffer returnLength = ByteBuffer.allocate(1);
 		for (int i = 0; i < buffer.length; i++) {
 			if (trandPackageContinue(reader, buffer[i], returnBuffer,returnLength)) {
 				int length = DataConvert.byteToInt(returnLength.array()[0]);
-				if(length == 4){
-					byte[] readData = Arrays.copyOf(returnBuffer.array(), length);
+				if (length == 4) {
+					byte[] readData = Arrays.copyOf(returnBuffer.array(),length);					
 					String deviceId = null;
-					if(null != reader.socket){
+					if (null != reader.socket) {
 						deviceId = reader.socket.getInetAddress().getHostName();
-					}else{
+					} else {
 						deviceId = reader.host;
 					}
-					callBack.getReadData(DataConvert.bytesToHexString(readData), 0 ,deviceId);
+					callBack.getReadData(
+							DataConvert.bytesToHexString(readData), 0, deviceId);
 				}
 			}
 		}
@@ -726,24 +742,22 @@ public class Reader extends PACKAGE {
 		}
 		return false;
 	}
-	
+
 	class ReaderCard implements Runnable {
 		Reader reader = null;
 		CallBack callBack = null;
-		
+
 		public ReaderCard() {
-			
+
 		}
 
-		public ReaderCard(Reader reader,CallBack callBack) {
+		public ReaderCard(Reader reader, CallBack callBack) {
 			this.reader = reader;
 			this.callBack = callBack;
 		}
 
 		public void run() {
-			reader.threadFunc(reader,callBack);
+			reader.threadFunc(reader, callBack);
 		}
 	}
 }
-
-

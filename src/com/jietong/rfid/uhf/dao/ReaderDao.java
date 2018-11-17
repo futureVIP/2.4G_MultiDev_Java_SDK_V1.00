@@ -1,7 +1,5 @@
 package com.jietong.rfid.uhf.dao;
 
-import java.util.List;
-
 import com.jietong.rfid.uhf.entity.Reader;
 import com.jietong.rfid.uhf.tool.CallBack;
 
