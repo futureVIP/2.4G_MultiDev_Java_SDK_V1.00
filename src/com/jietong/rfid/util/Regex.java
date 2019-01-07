@@ -17,6 +17,17 @@ public class Regex {
 		String regex = "^[0-9A-Fa-f]+$";
 		return match(regex, str);
 	}
+	
+	/**
+	 * 验证输入MAC地址数据条件(字符与数字同时出现)
+	 * @param str 待验证的字符串
+	 * @return 如果是符合格式的字符串,返回 <b>true </b>,否则为 <b>false </b>
+	 */
+	public static boolean isHexCharacterMAC(String str) {
+		String regex = "^[0-9A-Fa-f-]+$";
+		return match(regex, str);
+	}
+	
 	/**
 	 * 验证输入设备号数据条件(只能是数字出现)
 	 * @param str 待验证的字符串

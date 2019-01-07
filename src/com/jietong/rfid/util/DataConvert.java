@@ -264,7 +264,7 @@ public class DataConvert {
 	 * @param strIP
 	 * @return
 	 */
-	public static boolean IsValidIP(String strIP) {
+	public static boolean isValidIP(String strIP) {
 		// 先检查有无非数字字符
 		if (!Regex.IsMatch(strIP)) {
 			return false;
@@ -278,6 +278,33 @@ public class DataConvert {
 		for (int i = 0; i < 4; ++i) {
 			n = Integer.parseInt((strNumArray[i]));
 			if (n > 255) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	/**
+	 * 检查MAC格式是否正确
+	 * 
+	 * @param strMAC
+	 * @return
+	 */
+	public static boolean isValidMAC(String strMAC) {
+		// 先检查有无非数字字符
+		if (!Regex.isHexCharacterMAC(strMAC)) {
+			return false;
+		}
+		// 再检查数据范围是否合理
+		String[] strNumArray = strMAC.split("\\-");
+		if (strNumArray.length != 6) {
+			return false;
+		}
+		for (int i = 0; i < strNumArray.length; ++i) {
+			if(!Regex.isHexCharacter(strNumArray[i])){
+				return false;
+			}
+			if(strNumArray[i].length() != 2){
 				return false;
 			}
 		}

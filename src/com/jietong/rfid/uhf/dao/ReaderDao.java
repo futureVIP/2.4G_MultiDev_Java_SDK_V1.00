@@ -1,10 +1,11 @@
 package com.jietong.rfid.uhf.dao;
 
-import com.jietong.rfid.uhf.entity.Reader;
+import com.jietong.rfid.uhf.dao.impl.Reader;
 import com.jietong.rfid.uhf.tool.CallBack;
 
 public interface ReaderDao {
-	public Reader serialPortConnect(String portName, int baudRate);
+	
+	public Reader connect(String portName, int baudRate);
 
 	public void deviceUnInit(Reader reader);
 

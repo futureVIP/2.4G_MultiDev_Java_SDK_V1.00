@@ -1,6 +1,6 @@
 package com.jietong.rfid.util;
 
-import com.jietong.rfid.uhf.entity.Reader;
+import com.jietong.rfid.uhf.dao.impl.Reader;
 
 
 /**

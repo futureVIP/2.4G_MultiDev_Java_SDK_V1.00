@@ -4,6 +4,7 @@ import gnu.io.SerialPort;
 
 import java.net.Socket;
 
+import com.jietong.rfid.uhf.dao.impl.Reader;
 import com.jietong.rfid.uhf.tool.BCC;
 
 public class PACKAGE {
@@ -58,7 +59,7 @@ public class PACKAGE {
 	/**
 	 * 串口连接
 	 */
-	public boolean bIsComPort = false;
+	public boolean bisComPort = false;
 	/*
 	 * 从接收缓冲区转换后的实际数据长度
 	 */

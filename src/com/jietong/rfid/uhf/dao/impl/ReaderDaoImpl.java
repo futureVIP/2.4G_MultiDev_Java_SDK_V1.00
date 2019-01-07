@@ -1,13 +1,12 @@
 package com.jietong.rfid.uhf.dao.impl;
 
 import com.jietong.rfid.uhf.dao.ReaderDao;
-import com.jietong.rfid.uhf.entity.Reader;
 import com.jietong.rfid.uhf.tool.CallBack;
 
 public class ReaderDaoImpl implements ReaderDao {
 
 	@Override
-	public Reader serialPortConnect(String portName, int baudRate) {
+	public Reader connect(String portName, int baudRate) {
 		Reader reader = new Reader();
 		reader.setHost(reader,portName,baudRate);
 		if(!reader.connect(reader)){

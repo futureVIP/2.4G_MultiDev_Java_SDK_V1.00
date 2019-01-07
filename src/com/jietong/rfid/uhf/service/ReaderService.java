@@ -1,16 +1,19 @@
 package com.jietong.rfid.uhf.service;
 
-import java.util.List;
-
-import com.jietong.rfid.uhf.entity.Reader;
+import com.jietong.rfid.uhf.dao.impl.Reader;
 import com.jietong.rfid.uhf.tool.CallBack;
-import com.jietong.rfid.util.ReaderUtil;
 
 public interface ReaderService {
 
+	/**
+	 * 1.Connect Device
+	 * @param portName
+	 * @param baudRate
+	 * @return Object
+	 */
 	public Reader connect(String portName, int baudRate);
 	/**
-	 * 断开连接
+	 * 2.断开连接
 	 * 
 	 * @param reader
 	 * @return
@@ -18,21 +21,21 @@ public interface ReaderService {
 	public boolean disconnect(Reader reader);
 
 	/**
-	 * 连续寻卡
+	 * 3.连续寻卡
 	 * 
 	 * @param reader
 	 * @return 
 	 */
 	public boolean startMultiTag(Reader reader,CallBack callBack);
 	/**
-	 * 停止寻卡
+	 * 4.停止寻卡
 	 * 
 	 * @param reader
 	 * @return
 	 */
 	public boolean stop(Reader reader);
 	/**
-	 * 获取版本号
+	 * 5.获取版本号
 	 * 
 	 * @param reader
 	 * @return
@@ -40,7 +43,7 @@ public interface ReaderService {
 	public String version(Reader reader);
 
 	/**
-	 * 设置GPIO电平
+	 * 6.设置GPIO电平
 	 * 
 	 * @param reader
 	 * @param status
@@ -49,7 +52,7 @@ public interface ReaderService {
 	public boolean setGpio(Reader reader, byte status);
 
 	/**
-	 * 获取GPIO电平
+	 * 7.获取GPIO电平
 	 * 
 	 * @param reader
 	 * @return
@@ -57,7 +60,7 @@ public interface ReaderService {
 	public Byte getGpio(Reader reader);
 
 	/**
-	 * 获取工作模式
+	 * 8.获取工作模式
 	 * 
 	 * @param reader
 	 * @return
@@ -65,7 +68,7 @@ public interface ReaderService {
 	public byte[] getWorkMode(Reader reader);
 
 	/**
-	 * 设置工作模式
+	 * 9.设置工作模式
 	 * 
 	 * @param reader
 	 * @param setFrequencyParameters
@@ -74,7 +77,7 @@ public interface ReaderService {
 	public boolean setWorkMode(Reader reader, byte[] setFrequencyParameters);
 
 	/**
-	 * 重启
+	 * 10.重启
 	 * 
 	 * @param reader
 	 * @param module
@@ -83,7 +86,7 @@ public interface ReaderService {
 	public boolean reStart(Reader reader, int module);
 
 	/**
-	 * 数据通信方式
+	 * 11.数据通信方式
 	 * 
 	 * @param reader
 	 * @param pattern
@@ -92,7 +95,7 @@ public interface ReaderService {
 	public boolean setTransferPattern(Reader reader, int pattern);
 
 	/**
-	 * 蜂鸣器
+	 * 12.蜂鸣器
 	 * 
 	 * @param reader
 	 * @param state
@@ -101,7 +104,7 @@ public interface ReaderService {
 	public boolean setBuzzerState(Reader reader, int state);
 
 	/**
-	 * 开启载波测试
+	 * 13.开启载波测试
 	 * 
 	 * @param reader
 	 * @return
@@ -109,7 +112,7 @@ public interface ReaderService {
 	public boolean startCarrier(Reader reader);
 
 	/**
-	 * 停止载波测试
+	 * 14.停止载波测试
 	 * 
 	 * @param reader
 	 * @return
@@ -117,7 +120,7 @@ public interface ReaderService {
 	public boolean stopCarrier(Reader reader);
 
 	/**
-	 * 设置衰减系数
+	 * 15.设置衰减系数
 	 * 
 	 * @param reader
 	 * @param attenuation
@@ -126,7 +129,7 @@ public interface ReaderService {
 	public boolean setAttenuation(Reader reader, int attenuation);
 
 	/**
-	 * 获取衰减系数
+	 * 16.获取衰减系数
 	 * 
 	 * @param reader
 	 * @return
@@ -134,7 +137,7 @@ public interface ReaderService {
 	public String getAttenuation(Reader reader);
 
 	/**
-	 * 获取设备号
+	 * 17.获取设备号
 	 * 
 	 * @param reader
 	 * @return
@@ -142,7 +145,7 @@ public interface ReaderService {
 	public String getDevID(Reader reader);
 
 	/**
-	 * 设置设备号
+	 * 18.设置设备号
 	 * 
 	 * @param reader
 	 * @param deviceNo
@@ -151,7 +154,7 @@ public interface ReaderService {
 	public boolean setDevID(Reader reader, byte[] deviceNo);
 
 	/**
-	 * 获取网络参数
+	 * 19.获取网络参数
 	 * 
 	 * @param reader
 	 * @return
@@ -159,7 +162,7 @@ public interface ReaderService {
 	public byte[] getNet(Reader reader);
 
 	/**
-	 * 设置网络参数
+	 * 20.设置网络参数
 	 * 
 	 * @param reader
 	 * @param netParam
@@ -168,7 +171,7 @@ public interface ReaderService {
 	public boolean setNet(Reader reader, byte[] netParam);
 
 	/**
-	 * 恢复出厂设置
+	 * 21.恢复出厂设置
 	 * 
 	 * @param reader
 	 * @return
@@ -176,7 +179,7 @@ public interface ReaderService {
 	public boolean factoryReset(Reader reader);
 
 	/**
-	 * 获取wifi配置
+	 * 22.获取wifi配置
 	 * 
 	 * @param reader
 	 * @return
@@ -184,13 +187,11 @@ public interface ReaderService {
 	public byte[] getWifi(Reader reader);
 
 	/**
-	 * 设置wifi配置
+	 * 23.设置wifi配置
 	 * 
 	 * @param reader
 	 * @param wifiParam
 	 * @return
 	 */
 	public boolean setWifi(Reader reader, byte[] wifiParam);
-	
-	List<String> findSerialPorts();
 }
